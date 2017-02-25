@@ -3,7 +3,11 @@ package pl.edu.agh.mwo.invoice;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 
 import pl.edu.agh.mwo.invoice.Invoice;
@@ -98,7 +102,37 @@ public class InvoiceTest {
 		Invoice invoice = createEmptyInvoice();
 		invoice.addProduct(createTaxFreeProduct(), -1);
 	}
-
+	
+	@Test
+	public void testInvoiceHasNumberGreaterThanZero() {
+		Invoice invoice = createEmptyInvoice();
+		Assert.assertThat(invoice.getNumber(),Matchers.greaterThan(0));
+	}
+	
+	@Test
+	public void testTwoInvoicesHasDiffNumber() {
+		Invoice invoice = createEmptyInvoice();
+		Invoice invoice2 = createEmptyInvoice();
+		Assert.assertNotEquals(invoice.getNumber(),invoice2.getNumber());
+	}
+	
+	@Test
+	public void testTheSameInvoiceHasTheSameNumber() {
+		Invoice invoice = createEmptyInvoice();
+		Assert.assertEquals(invoice.getNumber(),invoice.getNumber());
+	}
+	
+	@Test
+	public void testInvoiceAlwaysHasDifferentNumber() {
+		Set<Integer> existingIds = new HashSet<Integer>();
+		for (int i = 0; i < 1000; i++){
+			Invoice invoice = createEmptyInvoice();
+			Assert.assertFalse(existingIds.contains(invoice.getNumber()));
+			existingIds.add(invoice.getNumber());
+		}
+		
+	}
+	
 	private Invoice createEmptyInvoice() {
 		return new Invoice();
 	}
