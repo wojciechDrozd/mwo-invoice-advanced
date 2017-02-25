@@ -133,6 +133,50 @@ public class InvoiceTest {
 		
 	}
 	
+	@Test
+	public void testPritntedInvoiceHasNumber(){
+		Invoice invoice = createEmptyInvoice();
+		int number = invoice.getNumber();
+		String printedInvoice = invoice.printedVersion();
+		Assert.assertThat(printedInvoice,  Matchers.containsString(String.valueOf(number)));
+	}
+	
+	@Test
+	public void testPritntedInvoiceHasProductName(){
+		Invoice invoice = createEmptyInvoice();
+		invoice.addProduct(new DairyProduct("Mleko", new BigDecimal("100")));
+		int number = invoice.getNumber();
+		String printedInvoice = invoice.printedVersion();
+		Assert.assertThat(printedInvoice,  Matchers.containsString(String.valueOf(number)));
+	}
+	
+	@Test
+	public void testPritntedInvoiceHasProductType(){
+		Invoice invoice = createEmptyInvoice();
+		invoice.addProduct(new DairyProduct("Mleko", new BigDecimal("100")));
+		int number = invoice.getNumber();
+		String printedInvoice = invoice.printedVersion();
+		Assert.assertThat(printedInvoice,  Matchers.containsString(String.valueOf(number)));
+	}
+	@Test
+	public void testPritntedInvoiceHasProductNumberAtBottom(){
+		Invoice invoice = createEmptyInvoice();
+		invoice.addProduct(new DairyProduct("Mleko", new BigDecimal("100")));
+		invoice.addProduct(new DairyProduct("Mleko2", new BigDecimal("100")));
+		int number = invoice.getNumber();
+		String printedInvoice = invoice.printedVersion();
+		Assert.assertThat(printedInvoice,  Matchers.containsString("Liczba pozycji: 2"));
+	}
+	@Test
+	public void testPritntedInvoiceHasProductNumberAtBottomNotDobule(){
+		Invoice invoice = createEmptyInvoice();
+		invoice.addProduct(new DairyProduct("Mleko", new BigDecimal("100")));
+		invoice.addProduct(new DairyProduct("Mleko", new BigDecimal("100")));
+		int number = invoice.getNumber();
+		String printedInvoice = invoice.printedVersion();
+		Assert.assertThat(printedInvoice,  Matchers.containsString("Liczba pozycji: 1"));
+	}
+	
 	private Invoice createEmptyInvoice() {
 		return new Invoice();
 	}
